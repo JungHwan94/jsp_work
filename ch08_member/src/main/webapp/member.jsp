@@ -1,91 +1,169 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
-<title>È¸¿ø°¡ÀÔ</title>
+<meta charset="UTF-8">
+<title>íšŒì›ê°€ì…</title>
 <style>
-	body {
-		display: flex;
-		justify-content: center;
-	}
+	body {background-color : #E7EDEC;}
+    table {
+        border: 1px solid;
+        border-collapse: collapse;
+        width: 1100px;
+    }
+	th, td {
+        border: 1px solid;
+        height:30px;
+    }
+    th {color:white; height: 40px; font-size: 20px;}
 </style>
+<script src="script.js?v=<%=System.currentTimeMillis() %>"></script>
+
+<!-- ì£¼ì†Œ ê°€ì ¸ì˜¤ê¸° -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+	function findAddr() {
+	    new daum.Postcode({
+	        oncomplete: function(data) {
+	            let roadAddr = data.roadAddress;  // ë„ë¡œëª… ì£¼ì†Œ
+	            let jibunAddr = data.jibunAddress;	// ì§€ë²ˆ ì£¼ì†Œ
+	            let extraAddr = '';					// ë™ì´ë‚˜ ë¹Œë”©ëª…ì„ ë„£ì„ ë³€ìˆ˜
+	            
+	            document.getElementById("postcode").value = data.zonecode; // ìš°í¸ë²ˆí˜¸
+	            
+	            if(data.userSelectedType == 'R') {  // ì‚¬ìš©ìê°€ ë„ë¡œëª… ì£¼ì†Œ ì„ íƒ
+	            	if(data.bname != '') {
+	            		extraAddr += data.bname;		// ë™ì´ë¦„
+	            	}
+	            	if(data.buildingName != '') {
+	            		extraAddr += ', ' + data.buildingName;	// ë¹Œë”©ëª…
+	            	}
+	            	roadAddr += extraAddr != '' ? '(' + extraAddr + ')' : '';          	
+	            	document.getElementById("addr").value = roadAddr;
+	            	
+	            } else {		// ì‚¬ìš©ìê°€ ì§€ë²ˆ ì£¼ì†Œ ì„ íƒ
+	            	if(data.buildingName != '') {
+	            		extraAddr += ', ' + data.buildingName;	// ë¹Œë”©ëª…
+	            	}
+	            	jibunAddr += extraAddr != '' ? '(' + extraAddr + ')' : '';
+	            	document.getElementById("addr").value = jibunAddr;
+	            }
+	            document.getElementById('detailAddr').focus();
+	        }
+	    }).open();
+	}
+</script>
 </head>
 <body>
-	<h2>È¸¿ø°¡ÀÔ</h2>
-<form action="memberProc.jsp" method="post">
-    <table>
-        <tr>
-            <th>¾ÆÀÌµğ</th>
-            <td><input type="text" name="id"> Áßº¹È®ÀÎ</td>
-        </tr>
-        <tr>
-            <th>ºñ¹Ğ¹øÈ£</th>
-            <td><input type="password" name="pwd"> (Æ¯¼ö±âÈ£, ¿µ¹®, ¼ıÀÚ °¢ 1°³ ÀÌ»ó, 8±ÛÀÚ ÀÌ»ó)</td>
-        </tr>
-        <tr>
-            <th>ºñ¹Ğ¹øÈ£ È®ÀÎ</th>
-            <td><input type="password" name="pwdConfirm"></td>
-        </tr>
-        <tr>
-            <th>ÀÌ¸§</th>
-            <td><input type="text" name="name"> (ÇÑ±Û·Î ÀÔ·Â)</td>
-        </tr>
-        <tr>
-            <th>¼ºº°</th>
-            <td>
-                <input type="radio" name="gender" value="³²"> ³²
-                <input type="radio" name="gender" value="¿©"> ¿©
-            </td>
-        </tr>
-        <tr>
-            <th>»ı³â¿ùÀÏ</th>
-            <td><input type="text" name="birthday"> (6±ÛÀÚ ÀÔ·Â, ¿¹: 190315)</td>
-        </tr>
-        <tr>
-            <th>E-mail</th>
-            <td><input type="text" name="email"> (¿¹: email@example.com)</td>
-        </tr>
-        <tr>
-            <th>¿ìÆí¹øÈ£</th>
-            <td><input type="text" name="zipcode"></td>
-        </tr>
-        <tr>
-            <th>ÁÖ¼Ò</th>
-            <td><input type="text" name="address"></td>
-        </tr>
-        <tr>
-            <th>»ó¼¼ÁÖ¼Ò</th>
-            <td><input type="text" name="detailAddress"></td>
-        </tr>
-        <tr>
-            <th>Ãë¹Ì</th>
-            <td>
-                <input type="checkbox" name="hobby" value="ÀÎÅÍ³İ"> ÀÎÅÍ³İ
-                <input type="checkbox" name="hobby" value="¿©Çà"> ¿©Çà
-                <input type="checkbox" name="hobby" value="°ÔÀÓ"> °ÔÀÓ
-                <input type="checkbox" name="hobby" value="¿µÈ­"> ¿µÈ­
-                <input type="checkbox" name="hobby" value="¿îµ¿"> ¿îµ¿
-            </td>
-        </tr>
-        <tr>
-            <th>Á÷¾÷</th>
-            <td>
-                <select name="job">
-                    <option value="">¼±ÅÃÇÏ¼¼¿ä</option>
-                    <option value="ÇĞ»ı">ÇĞ»ı</option>
-                    <option value="Á÷ÀåÀÎ">Á÷ÀåÀÎ</option>
-                    <option value="±âÅ¸">±âÅ¸</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" style="text-align: center;">
-                <input type="submit" value="°¡ÀÔ">
-            </td>
-        </tr>
-    </table>
-</form>
+	<form name="frm" method ="post" action="memberProc.jsp">
+		<table align="center">
+			<tr bgcolor="#799594">
+				<th colspan="3">íšŒì›ê°€ì…</th>
+			</tr>
+			<tr>
+				<td>ì•„ì´ë””</td>
+				<td>
+					<input name="id" onkeydown="inputIdChk();">							 	
+					<input type="button" value="IDì¤‘ë³µí™•ì¸" onclick="idCheck(this.form.id.value);">
+					<input type="hidden" name="idBtnCheck" value="idUncheck"> 
+				</td>
+				<td>ì˜ë¬¸ê³¼ ìˆ«ìë¡œë§Œ ì…ë ¥í•˜ì„¸ìš”</td>
+			</tr>
+			<tr>
+				<td>íŒ¨ìŠ¤ì›Œë“œ</td>
+				<td>
+					<input type="password" name="pwd">
+				</td>
+				<td>íŠ¹ìˆ˜ê¸°í˜¸,ì˜ë¬¸,ìˆ«ìê°€ ê° 1ê°œ ì´ìƒì”© ë“¤ì–´ê°€ì•¼ ë˜ê³  8ê¸€ì ì´ìƒ</td>
+			</tr>
+			<tr>
+				<td>íŒ¨ìŠ¤ì›Œë“œ í™•ì¸</td>
+				<td>
+					<input type="password" name="repwd">
+				</td>
+				<td>ìœ„ì˜ ë¹„ë°€ë²ˆí˜¸ë¥¼ í•œë²ˆ ë” ë„£ìœ¼ì„¸ìš”</td>
+			</tr>
+			<tr>
+				<td>ì´ë¦„</td>
+				<td>
+					<input name="name">
+				</td>
+				<td>í•œê¸€ë¡œ ì…ë ¥í•˜ì„¸ìš”</td>
+			</tr>
+			<tr>
+				<td>ì„±ë³„</td>
+				<td>
+					<input type="radio" name="gender" value="1" checked>ë‚¨&emsp;&emsp;
+					<input type="radio" name="gender" value="2" >ì—¬
+				</td>
+				<td>ì„±ë³„ì„ ì„ íƒí•´ ì£¼ì„¸ìš”</td>
+			</tr>
+			<tr>
+				<td>ìƒë…„ì›”ì¼</td>
+				<td>
+					<input name="birthday" >
+				</td>
+				<td>6ê¸€ìë¡œ ì…ë ¥. ex) 980315</td>
+			</tr>
+			<tr>
+				<td>E-mail</td>
+				<td>
+					<input type="email" name="email" size="40" >
+				</td>
+				<td>ex) email@naver.com</td>
+			</tr>
+			<tr>
+				<td>ìš°í¸ë²ˆí˜¸</td>
+				<td>
+					<input name="zipcode" id="postcode" readonly>
+					<input type="button" value="ìš°í¸ë²ˆí˜¸ ì°¾ê¸°" onclick="findAddr();">
+				</td>
+				<td>ìš°í¸ë²ˆí˜¸ë¥¼ ê²€ìƒ‰í•˜ì„¸ìš”</td>
+			</tr>
+			<tr>
+				<td>ì£¼ì†Œ</td>
+				<td>
+					<input name="address" id="addr" size="60" readonly><br/>
+					<input name="detail_address" id="detailAddr" placeholder="ìƒì„¸ì£¼ì†Œ ë„£ê¸°">
+				</td>
+				<td>ìƒì„¸ì£¼ì†Œê°€ ìˆìœ¼ë©´ ì…ë ¥í•´ì£¼ì„¸ìš”</td>
+			</tr>
+			<tr>
+				<td>ì·¨ë¯¸</td>
+				<td>
+					<input type="checkbox" name="hobby" value="ì¸í„°ë„·" checked>ì¸í„°ë„·&nbsp;
+					<input type="checkbox" name="hobby" value="ì—¬í–‰">ì—¬í–‰&nbsp;
+					<input type="checkbox" name="hobby" value="ê²Œì„">ê²Œì„&nbsp;
+					<input type="checkbox" name="hobby" value="ì˜í™”">ì˜í™”&nbsp;
+					<input type="checkbox" name="hobby" value="ìš´ë™">ìš´ë™
+				</td>
+				<td>ì·¨ë¯¸ë¥¼ ì„ íƒí•˜ì„¸ìš”</td>
+			</tr>
+			<tr>
+				<td>ì§ì—…</td>
+				<td>
+					<select name="job">
+						<option value="0" selected>ì„ íƒí•˜ì„¸ìš”.
+						<option value="íšŒì‚¬ì›">íšŒì‚¬ì›
+						<option value="ê³µë¬´ì›">ê³µë¬´ì›
+						<option value="ì˜ì‚¬">ì˜ì‚¬
+						<option value="ë²•ì¡°ì¸">ë²•ì¡°ì¸
+						<option value="í•™ìƒ">í•™ìƒ
+						<option value="êµìˆ˜">êµìˆ˜
+						<option value="ê¸°íƒ€">ê¸°íƒ€
+					</select>
+				</td>
+				<td>ì§ì—…ì„ ì„ íƒí•˜ì„¸ìš”</td>
+			</tr>
+			<tr>
+				<td colspan="3" align="center">
+					<input type="button" value="íšŒì›ê°€ì…" onclick="inputCheck();">&emsp;
+					<input type="reset" value="ë‹¤ì‹œì“°ê¸°">&emsp;
+					<input type="button" value="ë¡œê·¸ì¸" onclick="location.href='login.jsp'">
+				</td>
+			</tr>
+		</table>
+	</form>
 </body>
 </html>

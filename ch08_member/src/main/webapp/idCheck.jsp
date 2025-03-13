@@ -1,23 +1,23 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
-<jsp:useBean id="Member" class="ch08.MemberMgr" />
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<jsp:useBean id="mDao" class="ch08.MemberDao" />
 <%
 	String id = request.getParameter("id");
-	boolean exists = Member.checkIdExists(id);
+	boolean result = mDao.chickId(id);
 	
-	if(exists) {
-		out.println("»ç¿ëÁßÀÎ ¾ÆÀÌµð");
+	if(result) {
+		out.print(id + "ëŠ” ì‚¬ìš©í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤");
 	} else {
-		out.println("»ç¿ë °¡´ÉÇÑ ¾ÆÀÌµð");
+		out.print(id + "ëŠ” ì‚¬ìš© ê°€ëŠ¥ í•©ë‹ˆë‹¤");
 	}
 %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
-
+	<a href="" onclick="self.close()">ë‹«ê¸°</a>
 </body>
 </html>

@@ -1,21 +1,29 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
-<jsp:useBean id="Member" class="ch08.MemberMgr" />
-<jsp:useBean id="user" class="ch08.MemberMgr" />
-<jsp:setProperty name="user" property="*" />
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<jsp:useBean id="mDao" class="ch08.MemberDao" />
+<jsp:useBean id="mBean" class="ch08.Member" />
+<jsp:setProperty name="mBean" property="*" />
 <%
-	boolean success = Member.insertMember(user);
-
-	if(success) {
-		response.sendRedirect("login.jsp");
-	} else {
-		out.print("<script>alert('È¸¿ø°¡ÀÔ ½ÇÆÐ'); history.back();</script>");
+	boolean result = mDao.insertMember(mBean);
+	String msg = "íšŒì›ê°€ìž… ì‹¤íŒ¨";
+	String url = "member.jsp";
+	
+	if(result) {
+		msg = "íšŒì›ê°€ìž…ì„ í™˜ì˜í•©ë‹ˆë‹¤";
+		url = "login.jsp";
 	}
 %>
+<script>
+	alert("<%=msg %>");
+	location.href = "<%=url %>";
+</script>
+	alert("<%=msg%>");
+	location.href = ("<%=url%>");
+</script>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>

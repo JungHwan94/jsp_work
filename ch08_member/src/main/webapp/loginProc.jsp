@@ -1,23 +1,26 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
-<jsp:useBean id="Member" class="ch08.MemberMgr" />
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<jsp:useBean id="mDao" class="ch08.MemberDao" />
 <%
 	String id = request.getParameter("id");
-	String pwd = request.getParameter("pw");
+	String pwd = request.getParameter("pwd");
 	
-	boolean loginSuccess = Member.loginMember(id, pwd);
-
-    if (loginSuccess) {
-        session.setAttribute("userId", id);
-        response.sendRedirect("member.jsp");
-    } else {
-        out.println("<script>alert('·Î±×ÀÎ ½ÇÆÐ!'); history.back();</script>");
-    }
+	String msg = "ë¡œê·¸ì¸ ì‹¤íŒ¨";
+	
+	boolean result = mDao.loginMember(id, pwd);
+	if(result) {
+		session.setAttribute("idKey", id);
+		msg = "ë¡œê·¸ì¸ ì„±ê³µ";
+	}
 %>
+<script>
+	alert("<%=msg %>");
+	location.href = "login.jsp";
+</script>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
