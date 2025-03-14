@@ -14,6 +14,30 @@
 	h2 {text-align: center;}
 	.m30 {margin-top : 30px;}
 </style>
+<style>
+	* {margin: 0 auto; font-family: 'Arial', sans-serif;}
+	body {background-color: #f9f9f9;}
+	div {background: white; padding: 20px; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1);}
+	h2, h5 {text-align: center; color: #333;}
+	h2::before {content: "🗳️ ";} 
+	h5::before {content: "✏️ ";} 
+	.m30 {margin-top: 30px;}
+	hr {border: none; border-top: 2px solid #ddd; margin: 20px 0;}
+	table {width: 100%; border-collapse: collapse; background: white;}
+	th, td {border: 1px solid #ddd; padding: 10px; text-align: center;}
+	tr:nth-child(even) {background: #f8f9fa;}
+	tr:hover {background: #e9ecef;}
+	input, select {border: 1px solid #bbb; border-radius: 5px;}
+	input[type="submit"], input[type="reset"], input[type="button"] {
+		background: #28a745; color: white; border: none; padding: 5px 10px;
+		border-radius: 5px; cursor: pointer; font-size: 14px;
+	}
+	input[type="reset"] {background: #dc3545;}
+	input[type="button"] {background: #007bff;}
+	input[type="submit"]:hover {background: #218838;}
+	input[type="reset"]:hover {background: #c82333;}
+	input[type="button"]:hover {background: #0056b3;}
+</style>
 
 </head>
 <body>
