@@ -21,3 +21,5 @@ INSERT INTO member (id, pwd, name, gender, birthday, email, zipcode, address, de
 VALUES ('user03', 'test9999', '박철수', 'M', '950712', 'park@example.com', '67890', '대구시 중구', '303호', '음악', '교사');
 
 commit;
+
+ALTER TABLE MEMBER MODIFY HOBBY VARCHAR2(100);

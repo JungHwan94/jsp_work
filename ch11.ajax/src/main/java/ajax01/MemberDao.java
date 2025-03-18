@@ -22,6 +22,8 @@ public class MemberDao {
 			flag = rs.next();
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con);
 		}
 		return flag;
 	}
@@ -37,6 +39,8 @@ public class MemberDao {
 			flag = rs.next();
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con);
 		}
 		return flag;
 	}
@@ -63,65 +67,56 @@ public class MemberDao {
 				flag = true;	
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con);
 		}
 		return flag;
 	}
-
-	public Member getMember(String id) {
-		Member member = null;
-        try {
-            con = pool.getConnection();
-            sql = "SELECT id, name, gender, email FROM member WHERE id = ?";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, id);
-            rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                member = new Member();
-                member.setId(rs.getString("id"));
-                member.setName(rs.getString("name"));
-                member.setGender(rs.getString("gender"));
-                member.setEmail(rs.getString("email"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            closeResources();
-        }
-        return member;
-    }
 	
+	// id에 해당하는 데이터 얻어오기(1행)
+	public Member getMember(String id) {
+		Member bean = new Member();
+		try {
+			con = pool.getConnection();
+			sql = "select id, name, gender, email from member where id=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				bean.setId(rs.getString(1));
+				bean.setName(rs.getString(2));
+				bean.setGender(rs.getString(3));
+				bean.setEmail(rs.getString(4));
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con);
+		}
+		return bean;
+	}
+	
+	// 전체 member데이터 가져오기
 	public ArrayList<Member> getAllMember() {
-		ArrayList<Member> members = new ArrayList<>();
-        try {
-            con = pool.getConnection();
-            sql = "SELECT id, name, gender, email FROM member";
-            pstmt = con.prepareStatement(sql);
-            rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                Member member = new Member();
-                member.setId(rs.getString("id"));
-                member.setName(rs.getString("name"));
-                member.setGender(rs.getString("gender"));
-                member.setEmail(rs.getString("email"));
-                members.add(member);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            closeResources();
-        }
-        return members;
-    }
-
-    private void closeResources() {
-        try {
-            if (rs != null) rs.close();
-            if (pstmt != null) pstmt.close();
-            if (con != null) pool.freeConnection(con);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+		ArrayList<Member> alist = new ArrayList<Member>();
+		try {
+			con = pool.getConnection();
+			sql = "select * from member";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Member bean = new Member();
+				bean.setId(rs.getString("id"));
+				bean.setName(rs.getString("name"));
+				bean.setGender(rs.getString("gender"));
+				bean.setEmail(rs.getString("email"));
+				alist.add(bean);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con);
+		}
+		return alist;
+	}
 }
